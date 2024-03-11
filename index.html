@@ -61,6 +61,10 @@
     <script>
         let clicks = 0;
 
+        document.body.addEventListener('touchmove', function(event) {
+          event.preventDefault();
+        }, { passive: false });
+        
         function increaseClick(event) {
             clicks++;
             document.querySelector('.counter').innerText = clicks;
