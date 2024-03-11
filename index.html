@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Telegram Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -12,8 +13,9 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #FFFFFF; /* Фиксированный белый цвет фона */
-            color: #000000; /* Фиксированный черный цвет текста */
+            background-color: #FFFFFF;
+            color: #000000;
+            overflow: hidden; /* Предотвращает скроллинг */
         }
         .counter {
             font-size: 24px;
@@ -23,9 +25,11 @@
             padding: 10px 20px;
             font-size: 20px;
             cursor: pointer;
-            background-color: #F0F0F0; /* Светло-серый фон кнопки */
-            border: 1px solid #D0D0D0; /* Граница кнопки */
-            color: #000000; /* Цвет текста кнопки */
+            background-color: #F0F0F0;
+            border: 1px solid #D0D0D0;
+            color: #000000;
+            outline: none; /* Убирает контур при фокусе */
+            -webkit-tap-highlight-color: transparent; /* Убирает серый фон при клике в iOS */
         }
     </style>
 </head>
@@ -41,7 +45,6 @@
             document.getElementById('clickCount').innerText = clicks;
         }
 
-        // Инициализация Web App API
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
         }
