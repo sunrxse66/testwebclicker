@@ -60,10 +60,6 @@
 
     <script>
         let clicks = 0;
-
-        document.body.addEventListener('touchmove', function(event) {
-          event.preventDefault();
-        }, { passive: false });
         
         function increaseClick(event) {
             clicks++;
@@ -82,6 +78,10 @@
             }, 700);
         }
 
+        document.body.addEventListener('touchmove', function(event) {
+          event.preventDefault();
+        }, { passive: false });
+        
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
             // Попытка расширить вьюпорт, если API позволяет
