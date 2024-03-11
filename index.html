@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Telegram Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -14,8 +15,8 @@
             margin: 0;
             background-color: #FFFFFF;
             color: #000000;
-            position: relative;
             overflow: hidden;
+            touch-action: manipulation; /* Блокирует двойной тап для зума на мобильных устройствах */
         }
         .counter {
             font-size: 24px;
@@ -25,17 +26,22 @@
         .coin {
             width: 100px;
             height: 100px;
-            background-image: url('./coin.png'); /* Замените 'coin.png' на путь к вашему изображению монеты */
+            background-image: url('./coin.png'); /* Укажите путь к вашему изображению монеты */
             background-size: cover;
             cursor: pointer;
+        }
+        @keyframes fadeOutUp {
+            to {
+                opacity: 0;
+                transform: translate(0, -50px);
+            }
         }
         .plus-one {
             position: absolute;
             font-size: 24px;
             color: #000;
-            opacity: 0;
-            pointer-events: none; /* Убираем взаимодействие с элементом */
-            transition: transform 0.7s ease-out, opacity 0.5s ease-out;
+            animation: fadeOutUp 0.7s ease forwards;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -45,32 +51,30 @@
 
     <script>
         let clicks = 0;
+        const counterElement = document.querySelector('.counter');
 
         function increaseClick(event) {
-            clicks += 1;
-            document.querySelector('.counter').innerText = clicks;
+            clicks++;
+            counterElement.textContent = clicks;
 
-            // Создаем элемент +1 и анимируем его
             const plusOne = document.createElement('div');
-            plusOne.innerText = '+1';
             plusOne.className = 'plus-one';
+            plusOne.textContent = '+1';
+            
+            // Вычисляем позицию для "+1" относительно монеты
+            const coinRect = event.currentTarget.getBoundingClientRect();
+            const plusOneX = event.clientX - coinRect.left - coinRect.width / 2;
+            const plusOneY = event.clientY - coinRect.top - coinRect.height / 2;
+
+            plusOne.style.left = `${coinRect.left + plusOneX}px`;
+            plusOne.style.top = `${coinRect.top + plusOneY}px`;
+
             document.body.appendChild(plusOne);
 
-            // Позиционируем +1 рядом с местом клика
-            const rect = event.target.getBoundingClientRect();
-            plusOne.style.left = `${event.clientX - rect.left}px`;
-            plusOne.style.top = `${event.clientY - rect.top - 20}px`;
-
-            // Анимация улетания и исчезновения
-            setTimeout(() => {
-                plusOne.style.transform = 'translateY(-60px)';
-                plusOne.style.opacity = '0';
-            }, 10);
-
-            // Удаляем элемент после анимации
-            setTimeout(() => {
+            // Удаляем "+1" после окончания анимации
+            plusOne.addEventListener('animationend', () => {
                 plusOne.remove();
-            }, 700);
+            });
         }
 
         if (window.Telegram.WebApp) {
