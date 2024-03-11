@@ -69,23 +69,34 @@
     <div class="counter">0</div>
     <div class="level">Уровень: <span id="level">1</span></div>
     <div class="coin" onclick="increaseClick(event)"></div>
-    <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень</button>
+    <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень за 10 кликов</button>
 
     <script>
         let clicks = 0;
         let level = 1;
-
+        let nextLevelCost = 10; // Стоимость следующего уровня
+    
         function increaseClick(event) {
-            clicks += level;
-            document.querySelector('.counter').textContent = clicks;
+            clicks += level; // Добавляем очки в зависимости от уровня
+            document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
             showPlusOne(event.clientX, event.clientY, `+${level}`);
         }
-
+    
         function upgradeLevel() {
-            level++;
-            document.getElementById('level').textContent = `Уровень: ${level}`;
+            if (clicks >= nextLevelCost) {
+                clicks -= nextLevelCost; // Вычитаем стоимость улучшения
+                level++;
+                document.getElementById('level').textContent = `Уровень: ${level}`;
+                document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
+                
+                // Расчёт стоимости следующего уровня
+                nextLevelCost *= 10; // Примерный расчёт, адаптируйте под свои нужды
+                updateUpgradeButton();
+            } else {
+                alert("Недостаточно кликов для повышения уровня!");
+            }
         }
-
+    
         function showPlusOne(x, y, text) {
             const plusOne = document.createElement('div');
             plusOne.className = 'plus-one';
@@ -94,16 +105,23 @@
             const rect = document.body.getBoundingClientRect();
             plusOne.style.left = `${x - rect.left - plusOne.clientWidth / 2}px`;
             plusOne.style.top = `${y - rect.top - 20}px`;
-
+    
             setTimeout(() => {
                 plusOne.remove();
             }, 700);
         }
-
+    
+        function updateUpgradeButton() {
+            const upgradeButton = document.querySelector('.upgrade-button');
+            upgradeButton.textContent = `Повысить уровень за ${nextLevelCost} кликов`;
+        }
+    
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
             Telegram.WebApp.expand();
         }
+    
+        document.addEventListener('DOMContentLoaded', updateUpgradeButton); // Обновляем текст кнопки после загрузки DOM
     </script>
 </body>
 </html>
