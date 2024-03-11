@@ -6,22 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        body, button, button:focus {
             margin: 0;
+            padding: 0;
             background-color: #FFFFFF;
             color: #000000;
             overflow: hidden;
-            touch-action: manipulation; /* Блокирует двойной тап для зума на мобильных устройствах */
+            user-select: none;
+            outline: none;
+            touch-action: manipulation;
         }
         .counter {
             font-size: 24px;
             position: absolute;
             top: 20px;
+            user-select: none;
         }
         .coin {
             width: 100px;
@@ -29,6 +28,7 @@
             background-image: url('./coin.png'); /* Укажите путь к вашему изображению монеты */
             background-size: cover;
             cursor: pointer;
+            outline: none;
         }
         @keyframes fadeOutUp {
             to {
@@ -37,7 +37,7 @@
             }
         }
         .plus-one {
-            position: absolute;
+            position: fixed;
             font-size: 24px;
             color: #000;
             animation: fadeOutUp 0.7s ease forwards;
@@ -61,17 +61,13 @@
             plusOne.className = 'plus-one';
             plusOne.textContent = '+1';
             
-            // Вычисляем позицию для "+1" относительно монеты
-            const coinRect = event.currentTarget.getBoundingClientRect();
-            const plusOneX = event.clientX - coinRect.left - coinRect.width / 2;
-            const plusOneY = event.clientY - coinRect.top - coinRect.height / 2;
-
-            plusOne.style.left = `${coinRect.left + plusOneX}px`;
-            plusOne.style.top = `${coinRect.top + plusOneY}px`;
+            // Позиционирование "+1" в точке клика
+            plusOne.style.left = `${event.clientX}px`;
+            plusOne.style.top = `${event.clientY}px`;
 
             document.body.appendChild(plusOne);
 
-            // Удаляем "+1" после окончания анимации
+            // Удаление "+1" после окончания анимации
             plusOne.addEventListener('animationend', () => {
                 plusOne.remove();
             });
