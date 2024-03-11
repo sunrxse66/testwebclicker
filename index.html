@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Telegram Web App</title>
+    <title>Telegram Web App Clicker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
-            /* Отключаем возможность выделения текста для всех элементов */
             user-select: none;
-            /* Убираем стандартный outline для всех элементов при фокусе */
-            outline: none;
             -webkit-tap-highlight-color: transparent;
         }
         body {
@@ -24,27 +21,41 @@
             background-color: #FFFFFF;
             color: #000000;
             overflow: hidden;
-            /* Блокируем возможность зума и двойного тапа для увеличения */
             touch-action: manipulation;
         }
-        .counter {
+        .counter, .level {
             font-size: 24px;
-            margin-bottom: 20px; /* Отступ счетчика от монеты */
+            position: absolute;
+            top: 20px;
+        }
+        .level {
+            top: 50px;
         }
         .coin {
-            display: block; /* Чтобы обеспечить корректное позиционирование в center */
             width: 100px;
             height: 100px;
-            background-image: url('coin.png'); /* Замените на путь к вашему изображению монеты */
+            background-image: url('coin.png'); /* Replace with your coin image path */
             background-size: cover;
             cursor: pointer;
+        }
+        .upgrade-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 100px;
+        }
+        .upgrade-button:active {
+            background-color: #45a049;
         }
         .plus-one {
             position: absolute;
             font-size: 24px;
             color: #000;
             animation: fadeOutUp 0.7s ease forwards;
-            pointer-events: none; /* Исключаем взаимодействие с элементом */
+            pointer-events: none;
         }
         @keyframes fadeOutUp {
             to {
@@ -56,35 +67,41 @@
 </head>
 <body>
     <div class="counter">0</div>
+    <div class="level">Уровень: <span id="level">1</span></div>
     <div class="coin" onclick="increaseClick(event)"></div>
+    <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень</button>
 
     <script>
         let clicks = 0;
-        
+        let level = 1;
+
         function increaseClick(event) {
-            clicks++;
-            document.querySelector('.counter').innerText = clicks;
+            clicks += level;
+            document.querySelector('.counter').textContent = clicks;
+            showPlusOne(event.clientX, event.clientY, `+${level}`);
+        }
 
+        function upgradeLevel() {
+            level++;
+            document.getElementById('level').textContent = `Уровень: ${level}`;
+        }
+
+        function showPlusOne(x, y, text) {
             const plusOne = document.createElement('div');
-            plusOne.textContent = '+1';
             plusOne.className = 'plus-one';
-            plusOne.style.left = `${event.clientX - 10}px`;
-            plusOne.style.top = `${event.clientY - 20}px`;
-
+            plusOne.textContent = text;
             document.body.appendChild(plusOne);
+            const rect = document.body.getBoundingClientRect();
+            plusOne.style.left = `${x - rect.left - plusOne.clientWidth / 2}px`;
+            plusOne.style.top = `${y - rect.top - 20}px`;
 
             setTimeout(() => {
                 plusOne.remove();
             }, 700);
         }
 
-        document.body.addEventListener('touchmove', function(event) {
-          event.preventDefault();
-        }, { passive: false });
-        
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
-            // Попытка расширить вьюпорт, если API позволяет
             Telegram.WebApp.expand();
         }
     </script>
