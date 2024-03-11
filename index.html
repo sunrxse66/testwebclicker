@@ -6,42 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body, button, button:focus {
+        * {
             margin: 0;
             padding: 0;
+            /* Отключаем возможность выделения текста для всех элементов */
+            user-select: none;
+            /* Убираем стандартный outline для всех элементов при фокусе */
+            outline: none;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             background-color: #FFFFFF;
             color: #000000;
             overflow: hidden;
-            user-select: none;
-            outline: none;
+            /* Блокируем возможность зума и двойного тапа для увеличения */
             touch-action: manipulation;
         }
         .counter {
             font-size: 24px;
-            position: absolute;
-            top: 20px;
-            user-select: none;
+            margin-bottom: 20px; /* Отступ счетчика от монеты */
         }
         .coin {
+            display: block; /* Чтобы обеспечить корректное позиционирование в center */
             width: 100px;
             height: 100px;
-            background-image: url('./coin.png'); /* Укажите путь к вашему изображению монеты */
+            background-image: url('coin.png'); /* Замените на путь к вашему изображению монеты */
             background-size: cover;
             cursor: pointer;
-            outline: none;
+        }
+        .plus-one {
+            position: absolute;
+            font-size: 24px;
+            color: #000;
+            animation: fadeOutUp 0.7s ease forwards;
+            pointer-events: none; /* Исключаем взаимодействие с элементом */
         }
         @keyframes fadeOutUp {
             to {
                 opacity: 0;
-                transform: translate(0, -50px);
+                transform: translateY(-50px);
             }
-        }
-        .plus-one {
-            position: fixed;
-            font-size: 24px;
-            color: #000;
-            animation: fadeOutUp 0.7s ease forwards;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -51,30 +59,114 @@
 
     <script>
         let clicks = 0;
-        const counterElement = document.querySelector('.counter');
 
         function increaseClick(event) {
             clicks++;
-            counterElement.textContent = clicks;
+            document.querySelector('.counter').innerText = clicks;
 
             const plusOne = document.createElement('div');
-            plusOne.className = 'plus-one';
             plusOne.textContent = '+1';
-            
-            // Позиционирование "+1" в точке клика
-            plusOne.style.left = `${event.clientX}px`;
-            plusOne.style.top = `${event.clientY}px`;
+            plusOne.className = 'plus-one';
+            plusOne.style.left = `${event.clientX - 10}px`;
+            plusOne.style.top = `${event.clientY - 20}px`;
 
             document.body.appendChild(plusOne);
 
-            // Удаление "+1" после окончания анимации
-            plusOne.addEventListener('animationend', () => {
+            setTimeout(() => {
                 plusOne.remove();
-            });
+            }, 700);
         }
 
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
+            // Попытка расширить вьюпорт, если API позволяет
+            Telegram.WebApp.expand();
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* Отключаем возможность выделения текста для всех элементов */
+            user-select: none;
+            /* Убираем стандартный outline для всех элементов при фокусе */
+            outline: none;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #FFFFFF;
+            color: #000000;
+            overflow: hidden;
+            /* Блокируем возможность зума и двойного тапа для увеличения */
+            touch-action: manipulation;
+        }
+        .counter {
+            font-size: 24px;
+            margin-bottom: 20px; /* Отступ счетчика от монеты */
+        }
+        .coin {
+            display: block; /* Чтобы обеспечить корректное позиционирование в center */
+            width: 100px;
+            height: 100px;
+            background-image: url('./coin.png'); /* Замените на путь к вашему изображению монеты */
+            background-size: cover;
+            cursor: pointer;
+        }
+        .plus-one {
+            position: absolute;
+            font-size: 24px;
+            color: #000;
+            animation: fadeOutUp 0.7s ease forwards;
+            pointer-events: none; /* Исключаем взаимодействие с элементом */
+        }
+        @keyframes fadeOutUp {
+            to {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="counter">0</div>
+    <div class="coin" onclick="increaseClick(event)"></div>
+
+    <script>
+        let clicks = 0;
+
+        function increaseClick(event) {
+            clicks++;
+            document.querySelector('.counter').innerText = clicks;
+
+            const plusOne = document.createElement('div');
+            plusOne.textContent = '+1';
+            plusOne.className = 'plus-one';
+            plusOne.style.left = `${event.clientX - 10}px`;
+            plusOne.style.top = `${event.clientY - 20}px`;
+
+            document.body.appendChild(plusOne);
+
+            setTimeout(() => {
+                plusOne.remove();
+            }, 700);
+        }
+
+        if (window.Telegram.WebApp) {
+            Telegram.WebApp.ready();
+            // Попытка расширить вьюпорт, если API позволяет
             Telegram.WebApp.expand();
         }
     </script>
