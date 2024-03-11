@@ -24,23 +24,31 @@
             touch-action: manipulation;
             position: relative;
         }
+        .counter, .level {
+            font-size: 24px;
+            margin: 10px;
+        }
+        .coin {
+            width: 100px;
+            height: 100px;
+            background-image: url('coin.png'); /* Update with your coin image */
+            background-size: cover;
+            cursor: pointer;
+            margin: 20px 0;
+        }
         .panel {
             display: flex;
             justify-content: space-around;
             width: 80%;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.7);
             padding: 10px;
             border-radius: 10px;
             position: absolute;
-            top: 70%;
+            bottom: 20%; /* Adjust based on your layout */
         }
-        .category, .close-button, .upgrade-button {
+        .category {
             font-size: 16px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            color: #000;
             cursor: pointer;
         }
         .popup {
@@ -49,29 +57,25 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 20px;
-            width: 80%;
+            width: 90%;
             max-width: 400px;
-            z-index: 10;
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            text-align: center;
         }
-        .popup-content {
-            margin-bottom: 20px;
-        }
-        .coin {
-            width: 100px;
-            height: 100px;
-            background-image: url('coin.png');
-            background-size: cover;
+        .close-button {
+            margin-top: 20px;
             cursor: pointer;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
+    <div class="counter">Кликов: 0</div>
+    <div class="level">Уровень: 1</div>
+    <div class="coin" onclick="increaseClick()"></div>
     <div class="panel">
         <div class="category" onclick="showPopup('frens')">Frens</div>
         <div class="category" onclick="showPopup('earn')">Earn</div>
@@ -79,61 +83,40 @@
     </div>
 
     <div id="popup" class="popup">
-        <div id="popupContent" class="popup-content">
-            <!-- Содержимое всплывающего окна -->
-        </div>
-        <button class="close-button" onclick="closePopup()">Закрыть</button>
+        <div id="popupContent"></div>
+        <button class="close-button" onclick="closePopup()">Close</button>
     </div>
 
     <script>
         let clicks = 0;
         let level = 1;
-        let nextLevelCost = 10;
+
+        function increaseClick() {
+            clicks += level;
+            document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
+        }
 
         function showPopup(category) {
-            let content = document.getElementById("popupContent");
-            content.innerHTML = ""; // Очищаем содержимое
+            const popupContent = document.getElementById("popupContent");
+            popupContent.innerHTML = `<h2>${category}</h2>`; // Basic header for demonstration
 
-            switch(category) {
-                case 'frens':
-                    content.innerHTML = "<p>Друзья и их преимущества</p>";
-                    break;
-                case 'earn':
-                    content.innerHTML = "<p>Способы заработка монет</p>";
-                    break;
-                case 'boosts':
-                    content.innerHTML = `
-                        <div>Кликов: <span id="clicksDisplay">0</span></div>
-                        <div class="coin" onclick="increaseClick(event)"></div>
-                        <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень за ${nextLevelCost} кликов</button>
-                        <div>Уровень: <span id="levelDisplay">1</span></div>
-                    `;
-                    break;
+            // Example content for "Boosts"
+            if (category === 'boosts') {
+                popupContent.innerHTML += "<p>Здесь будет информация о доступных улучшениях.</p>";
+                // Logic for displaying available boosts will go here
+            } else if (category === 'frens') {
+                popupContent.innerHTML += "<p>Здесь информация о друзьях.</p>";
+                // Details for "Frens" category
+            } else if (category === 'earn') {
+                popupContent.innerHTML += "<p>Как заработать больше монет.</p>";
+                // Details for "Earn" category
             }
 
-            document.getElementById("popup").style.display = "flex";
+            document.getElementById("popup").style.display = "block";
         }
 
         function closePopup() {
             document.getElementById("popup").style.display = "none";
-        }
-
-        function increaseClick(event) {
-            clicks += level;
-            document.getElementById("clicksDisplay").textContent = clicks;
-        }
-
-        function upgradeLevel() {
-            if (clicks >= nextLevelCost) {
-                clicks -= nextLevelCost;
-                level++;
-                nextLevelCost *= 2; // Простой пример, измените по необходимости
-                document.getElementById("levelDisplay").textContent = level;
-                document.getElementById("clicksDisplay").textContent = clicks;
-                document.querySelector(".upgrade-button").textContent = `Повысить уровень за ${nextLevelCost} кликов`;
-            } else {
-                alert("Недостаточно кликов для повышения уровня!");
-            }
         }
 
         if (window.Telegram.WebApp) {
