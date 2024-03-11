@@ -1,31 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Telegram Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .counter {
+            font-size: 24px;
+            margin: 20px;
+        }
+        .click-button {
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Telegram Clicker</h1>
-    <script async src="https://telegram.org/js/telegram-widget.js?7"
-            data-telegram-login="sedrfdsfwerw_bot"
-            data-size="large"
-            data-radius="10"
-            data-auth-url="http://localhost:5000/login"
-            data-request-access="write"></script>
-    <p>Количество кликов: <span id="clicks">0</span></p>
-    <button id="clickButton" style="display:none;">Кликни меня</button>
+    <div class="counter">Кликов: <span id="clickCount">0</span></div>
+    <button class="click-button" onclick="increaseClick()">Кликни меня</button>
 
     <script>
         let clicks = 0;
 
-        document.getElementById('clickButton').onclick = function() {
-            clicks++;
-            document.getElementById('clicks').textContent = clicks;
-            // Здесь можете добавить код для отправки числа кликов на сервер
-        };
+        function increaseClick() {
+            clicks += 1;
+            document.getElementById('clickCount').innerText = clicks;
+        }
+
+        // Инициализация Web App API
+        if (window.Telegram.WebApp) {
+            Telegram.WebApp.ready();
+        }
     </script>
 </body>
 </html>
