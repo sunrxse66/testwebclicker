@@ -22,106 +22,124 @@
             color: #000000;
             overflow: hidden;
             touch-action: manipulation;
+            position: relative;
         }
-        .counter, .level {
-            font-size: 24px;
+        .panel {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 10px;
             position: absolute;
-            top: 20px;
+            top: 70%;
         }
-        .level {
-            top: 50px;
+        .category, .close-button, .upgrade-button {
+            font-size: 16px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+        }
+        .popup-content {
+            margin-bottom: 20px;
         }
         .coin {
             width: 100px;
             height: 100px;
-            background-image: url('coin.png'); /* Replace with your coin image path */
+            background-image: url('coin.png');
             background-size: cover;
             cursor: pointer;
-        }
-        .upgrade-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            position: absolute;
-            top: 100px;
-        }
-        .upgrade-button:active {
-            background-color: #45a049;
-        }
-        .plus-one {
-            position: absolute;
-            font-size: 24px;
-            color: #000;
-            animation: fadeOutUp 0.7s ease forwards;
-            pointer-events: none;
-        }
-        @keyframes fadeOutUp {
-            to {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="counter">0</div>
-    <div class="level">Уровень: <span id="level">1</span></div>
-    <div class="coin" onclick="increaseClick(event)"></div>
-    <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень за 10 кликов</button>
+    <div class="panel">
+        <div class="category" onclick="showPopup('frens')">Frens</div>
+        <div class="category" onclick="showPopup('earn')">Earn</div>
+        <div class="category" onclick="showPopup('boosts')">Boosts</div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div id="popupContent" class="popup-content">
+            <!-- Содержимое всплывающего окна -->
+        </div>
+        <button class="close-button" onclick="closePopup()">Закрыть</button>
+    </div>
 
     <script>
         let clicks = 0;
         let level = 1;
-        let nextLevelCost = 10; // Стоимость следующего уровня
-    
-        function increaseClick(event) {
-            clicks += level; // Добавляем очки в зависимости от уровня
-            document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
-            showPlusOne(event.clientX, event.clientY, `+${level}`);
+        let nextLevelCost = 10;
+
+        function showPopup(category) {
+            let content = document.getElementById("popupContent");
+            content.innerHTML = ""; // Очищаем содержимое
+
+            switch(category) {
+                case 'frens':
+                    content.innerHTML = "<p>Друзья и их преимущества</p>";
+                    break;
+                case 'earn':
+                    content.innerHTML = "<p>Способы заработка монет</p>";
+                    break;
+                case 'boosts':
+                    content.innerHTML = `
+                        <div>Кликов: <span id="clicksDisplay">0</span></div>
+                        <div class="coin" onclick="increaseClick(event)"></div>
+                        <button class="upgrade-button" onclick="upgradeLevel()">Повысить уровень за ${nextLevelCost} кликов</button>
+                        <div>Уровень: <span id="levelDisplay">1</span></div>
+                    `;
+                    break;
+            }
+
+            document.getElementById("popup").style.display = "flex";
         }
-    
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        function increaseClick(event) {
+            clicks += level;
+            document.getElementById("clicksDisplay").textContent = clicks;
+        }
+
         function upgradeLevel() {
             if (clicks >= nextLevelCost) {
-                clicks -= nextLevelCost; // Вычитаем стоимость улучшения
+                clicks -= nextLevelCost;
                 level++;
-                document.getElementById('level').textContent = `Уровень: ${level}`;
-                document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
-                
-                // Расчёт стоимости следующего уровня
-                nextLevelCost *= 10; // Примерный расчёт, адаптируйте под свои нужды
-                updateUpgradeButton();
+                nextLevelCost *= 2; // Простой пример, измените по необходимости
+                document.getElementById("levelDisplay").textContent = level;
+                document.getElementById("clicksDisplay").textContent = clicks;
+                document.querySelector(".upgrade-button").textContent = `Повысить уровень за ${nextLevelCost} кликов`;
             } else {
                 alert("Недостаточно кликов для повышения уровня!");
             }
         }
-    
-        function showPlusOne(x, y, text) {
-            const plusOne = document.createElement('div');
-            plusOne.className = 'plus-one';
-            plusOne.textContent = text;
-            document.body.appendChild(plusOne);
-            const rect = document.body.getBoundingClientRect();
-            plusOne.style.left = `${x - rect.left - plusOne.clientWidth / 2}px`;
-            plusOne.style.top = `${y - rect.top - 20}px`;
-    
-            setTimeout(() => {
-                plusOne.remove();
-            }, 700);
-        }
-    
-        function updateUpgradeButton() {
-            const upgradeButton = document.querySelector('.upgrade-button');
-            upgradeButton.textContent = `Повысить уровень за ${nextLevelCost} кликов`;
-        }
-    
+
         if (window.Telegram.WebApp) {
             Telegram.WebApp.ready();
             Telegram.WebApp.expand();
         }
-    
-        document.addEventListener('DOMContentLoaded', updateUpgradeButton); // Обновляем текст кнопки после загрузки DOM
     </script>
 </body>
 </html>
