@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickX = event.pageX;
     const clickY = event.pageY;
     // Вычисляем углы наклона
-    const rotateX = (clickY - centerY) / 40;
-    const rotateY = -(clickX - centerX) / 40;
+    const rotateX = (clickY - centerY) / 20;
+    const rotateY = -(clickX - centerX) / 20;
     // Применяем стили с углами наклона
     coin.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     // Возвращаем монету в исходное состояние
