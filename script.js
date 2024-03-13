@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
 
     // Вибрация при нажатии (если поддерживается устройством и разрешена в Telegram)
-    if (Telegram.WebApp.canUseNativeDeviceFeatures() && navigator.vibrate) {
+    if (Telegram.WebApp() && navigator.vibrate) {
       navigator.vibrate(200);
     }
   });
