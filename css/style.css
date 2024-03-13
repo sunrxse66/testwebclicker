@@ -33,8 +33,8 @@ body {
 .left-cont {
     display: flex;
     flex-direction: row;
-    width: 330px;
-    height: 71px;
+    width: 300px;
+    height: 61px;
     background-color: #000D1E;
     opacity: 67%;
     border-radius: 20px;
