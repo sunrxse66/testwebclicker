@@ -32,14 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotateY = -(clickX - centerX) / 20;
     // Применяем стили с углами наклона
     coin.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+    const canVibrate = window.navigator.vibrate
+    if (canVibrate) window.navigator.vibrate(100)
     // Возвращаем монету в исходное состояние
     setTimeout(() => {
       coin.style.transform = '';
     }, 200);
-
-    // Вибрация при нажатии (если поддерживается устройством и разрешена в Telegram)
-    if (Telegram.WebApp() && navigator.vibrate) {
-      navigator.vibrate(200);
-    }
   });
 });
