@@ -1,148 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Telegram Web App Clicker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #FFFFFF;
-            color: #000000;
-            overflow: hidden;
-            touch-action: manipulation;
-            position: relative;
-        }
-        .counter, .level {
-            font-size: 24px;
-            margin: 10px;
-        }
-        .coin {
-            width: 100px;
-            height: 100px;
-            background-image: url('coin.png'); /* Update with your coin image */
-            background-size: cover;
-            cursor: pointer;
-            margin: 20px 0;
-        }
-        .panel {
-            display: flex;
-            justify-content: space-around;
-            width: 80%;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            position: absolute;
-            bottom: 20%; /* Adjust based on your layout */
-        }
-        .category {
-            font-size: 16px;
-            color: #000;
-            cursor: pointer;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 1000;
-            text-align: center;
-        }
-        .close-button {
-            margin-top: 20px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="counter">Кликов: 0</div>
-    <div class="level">Уровень: 1</div>
-    <div class="coin" onclick="increaseClick()"></div>
-    <div class="panel">
-        <div class="category" onclick="showPopup('frens')">Frens</div>
-        <div class="category" onclick="showPopup('earn')">Earn</div>
-        <div class="category" onclick="showPopup('boosts')">Boosts</div>
+  <div class="header">
+    <h1>TLT COIN</h1>
+  </div>
+  <div class="content">
+    <div class="left-cont">
+      <div class="menu-cont">
+        <img src="img/test.png" alt="">
+        <p>Boosts</p>
+      </div>
+      <div class="line"></div>
+      <div class="menu-cont">
+        <img src="img/test.png" alt="">
+        <p>Swap</p>
+      </div>
+      <div class="line"></div>
+      <div class="menu-cont">
+        <img src="img/test.png" alt="">
+        <p>News</p>
+      </div>
+      <div class="line"></div>
+      <div class="menu-cont">
+        <img src="img/test.png" alt="">
+        <p>Apps</p>
+      </div>
     </div>
-
-    <div id="popup" class="popup">
-        <div id="popupContent"></div>
-        <button class="close-button" onclick="closePopup()">Close</button>
+    <div class="right-cont">
+      <h2>3,232,180</h2>
+      <img src="img/coin1.png" alt="" width="250" height="250">
     </div>
-
-    <script>
-        let level = 1;
-        let clicks = 0;
-        let levelCost = 10;
-        
-        function increaseClick() {
-            clicks += 1; // Увеличиваем на 1, но можно изменить на level для бонуса за уровень
-            document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
-        }
-        
-        function showPopup(category) {
-            const popupContent = document.getElementById("popupContent");
-            popupContent.innerHTML = `<h2>${category}</h2>`;
-        
-            if (category === 'boosts') {
-                popupContent.innerHTML += `
-                    <p>Текущий уровень: ${level}</p>
-                    <p>Стоимость следующего уровня: ${levelCost} кликов</p>
-                    <button onclick="buyLevel()">Повысить уровень</button>
-                `;
-            } else {
-                // Обработка других категорий
-                popupContent.innerHTML += `<p>Здесь информация о ${category}.</p>`;
-            }
-        
-            document.getElementById("popup").style.display = "block";
-        }
-        
-        function buyLevel() {
-            if (clicks >= levelCost) {
-                clicks -= levelCost; // Вычитаем стоимость повышения уровня
-                level++; // Увеличиваем уровень
-                levelCost *= 2; // Удваиваем стоимость следующего уровня
-                updateUI(); // Обновляем интерфейс
-            } else {
-                alert("Недостаточно кликов для повышения уровня!");
-            }
-        }
-        
-        function updateUI() {
-            document.querySelector('.counter').textContent = `Кликов: ${clicks}`;
-            const boostsPopup = document.getElementById("popupContent").querySelector("h2").textContent;
-            if (boostsPopup === 'boosts') {
-                showPopup('boosts'); // Обновляем содержимое окна "Boosts", если оно открыто
-            }
-        }
-        
-        function closePopup() {
-            document.getElementById("popup").style.display = "none";
-        }
-        
-        if (window.Telegram.WebApp) {
-            Telegram.WebApp.ready();
-            Telegram.WebApp.expand();
-        }
-
-    </script>
+  </div>
 </body>
 </html>
