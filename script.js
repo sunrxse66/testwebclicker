@@ -1,15 +1,12 @@
 // Расширение виджета Telegram Web App
 Telegram.WebApp.expand();
 
-document.addEventListener('DOMContentLoaded', () => {
-  const modals = document.querySelectorAll('.modal');
-  modals.forEach(modal => {
-    modal.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }, { passive: false });
-  });
+// Запрет событий `touchmove` для предотвращения скролла на мобильных устройствах
+function blockScroll(e) {
+  e.preventDefault();
+}
 
+document.addEventListener('DOMContentLoaded', () => {
   // Находим элемент h2 и картинку coin1.png по селектору
   const scoreElement = document.querySelector('.content h2');
   const coin = document.querySelector('.right-cont img');
@@ -48,30 +45,37 @@ document.addEventListener('DOMContentLoaded', () => {
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
   if(modal) {
-      var modalContent = modal.querySelector('.modal-content');
-      modal.style.display = 'block';
-      modalContent.style.display = 'block'; // Убедимся, что modal-content виден
-      modalContent.style.bottom = '-100%'; // Устанавливаем исходное положение для анимации
-      
-      setTimeout(() => { // Анимация для скольжения снизу вверх
-          modalContent.style.animation = 'slideIn 0.4s forwards';
-      }, 10); // Маленькая задержка перед началом анимации
+    var modalContent = modal.querySelector('.modal-content');
+    modal.style.display = 'block';
+    modalContent.style.display = 'block';
+
+    // Добавляем блокировки событий на touchmove
+    window.addEventListener('touchmove', blockScroll, { passive: false });
+
+    modalContent.style.bottom = '-100%';
+    setTimeout(() => {
+        modalContent.style.animation = 'slideIn 0.4s forwards';
+    }, 10);
   }
 }
 
 // Функция для закрытия модального окна
 function closeModal(modal) {
   if (modal) {
-      var modalContent = modal.querySelector('.modal-content');
-      if (modalContent) {
-          modalContent.style.bottom = ''; // Сбрасываем до значения по умолчанию
-          modalContent.style.animation = 'slideOut 0.4s forwards';
-          setTimeout(() => {
-              modal.style.display = 'none'; // Полностью скроет модальное окно
-              modalContent.style.removeProperty('animation'); // Удаляем анимацию
-              modalContent.style.removeProperty('bottom'); // Удаляем свойство bottom
-          }, 400); // Должно соответствовать продолжительности анимации
-      }
+    var modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.style.bottom = '';
+        modalContent.style.animation = 'slideOut 0.4s forwards';
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modalContent.style.removeProperty('animation');
+            modalContent.style.removeProperty('bottom');
+
+            // Удаляем блокировки событий на touchmove
+            window.removeEventListener('touchmove', blockScroll, { passive: false });
+
+        }, 400);
+    }
   }
 }
 
