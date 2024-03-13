@@ -34,6 +34,11 @@ html {
     padding-bottom: 76px;
 }
 
+.content h2 {
+    font-size: 48px;
+    font-family: "Montserrat", sans-serif;
+}
+
 .left-cont {
     position: fixed; /* Используйте absolute, если контейнер должен относительно родителя позиционироваться */
     bottom: 0; /* Прижимаем к низу экрана */
