@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #C7C6E7;
+    background-color: #C7C6E7 !important;
 }
 
 .header {
@@ -19,21 +19,22 @@ body {
     font-size: 18px;
     color: #FFFBFC;
     font-family: "Montserrat", sans-serif;
+    border-radius: 0 0 30px 30px;
 }
 
 .content {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 150px;
-    background-color: #C7C6E7;
+    flex-direction: column;
+    margin-top: 100px;
 }
 
 .left-cont {
     display: flex;
-    flex-direction: column;
-    width: 61px;
-    height: 300px;
+    flex-direction: row;
+    width: 300px;
+    height: 61px;
     background-color: #000D1E;
     opacity: 67%;
     border-radius: 20px;
@@ -49,13 +50,13 @@ body {
 }
 
 .line {
-    width: 35px;
-    height: 1px;
+    width: 1px;
+    height: 35px;
     background-color: #FCF5FB;
 }
 
 .left-cont {
-    margin-right: 65px;
+    margin-top: 65px;
 }
 
 .right-cont {
