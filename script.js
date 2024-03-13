@@ -1,12 +1,15 @@
 // Расширение виджета Telegram Web App
 Telegram.WebApp.expand();
 
-// Запрет событий `touchmove` для предотвращения скролла на мобильных устройствах
-window.addEventListener('touchmove', function(e) {
-  e.preventDefault();
-}, { passive: false });
-
 document.addEventListener('DOMContentLoaded', () => {
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach(modal => {
+    modal.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }, { passive: false });
+  });
+
   // Находим элемент h2 и картинку coin1.png по селектору
   const scoreElement = document.querySelector('.content h2');
   const coin = document.querySelector('.right-cont img');
@@ -73,14 +76,6 @@ function closeModal(modal) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const modals = document.querySelectorAll('.modal');
-  modals.forEach(modal => {
-    modal.addEventListener('touchmove', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }, { passive: false });
-  });
-
   // Добавляем обработчики для открытия модальных окон
   var boostsButton = document.querySelector('.menu-cont.boost');
   var swapButton = document.querySelector('.menu-cont.swap');
