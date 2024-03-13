@@ -11,35 +11,6 @@
   <div class="header">
     <h1>TLT COIN</h1>
   </div>
-  <div id="user-info">
-    <h2>Загрузка...</h2>
-  </div>
-  <script>
-    // Слушаем, когда DOM полностью загружен
-    document.addEventListener('DOMContentLoaded', () => {
-      // Инициализация Telegram Web App SDK
-      const webApp = new Telegram.WebApp();
-    
-      // Расширяем окно Web App на весь экран
-      webApp.expand();
-    
-      // Отображаем информацию о пользователе
-      const userInfoElement = document.getElementById('user-info');
-    
-      // Проверяем наличие данных пользователя
-      if (webApp.initDataUnsafe.user) {
-        // Формируем строку приветствия
-        const username = webApp.initDataUnsafe.user.username || "Гость";
-        userInfoElement.innerHTML = `<h2>Привет, ${username}!</h2>`;
-      } else {
-        // Информируем пользователя о неудачной попытке загрузки данных
-        userInfoElement.innerHTML = `<h2>Не удалось загрузить информацию о пользователе.</h2>`;
-      }
-    
-      // В этом месте можно реализовать логику управления очками пользователя
-      // ...
-    });
-  </script>
   <div class="content">
     <h2>0</h2>
     <div class="right-cont">

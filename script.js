@@ -1,4 +1,9 @@
-webApp.expand();
+document.addEventListener('DOMContentLoaded', () => {
+if (window.Telegram) {
+    const webApp = new Telegram.WebApp();  
+    webApp.expand(); // растягиваем окно до максимума сразу после загрузки
+}
+});
 
 // Запрет событий `touchmove` для предотвращения скролла на мобильных устройствах
 window.addEventListener('touchmove', function(e) {
