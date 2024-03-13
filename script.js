@@ -72,24 +72,15 @@ function closeModal(modal) {
   }
 }
 
-// Добавляем обработчик событий для закрытия модального окна
-function setupCloseModalOnOutsideClick() {
-  window.addEventListener('click', function(event) {
-      if (event.target.classList.contains('modal')) {
-          closeModal(event.target);
-      }
-  });
-
-  // Обработчик касаний для закрытия модального окна (для мобильных устройств)
-  window.addEventListener('touchend', function(event) {
-      if (event.target.classList.contains('modal')) {
-          closeModal(event.target);
-          event.preventDefault(); // Предотвращаем выполнение последующих событий "click"
-      }
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach(modal => {
+    modal.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }, { passive: false });
+  });
+
   // Добавляем обработчики для открытия модальных окон
   var boostsButton = document.querySelector('.menu-cont.boost');
   var swapButton = document.querySelector('.menu-cont.swap');
