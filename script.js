@@ -2,9 +2,9 @@
 Telegram.WebApp.expand();
 
 // Запрет событий `touchmove` для предотвращения скролла на мобильных устройствах
-function blockScroll(e) {
+window.addEventListener('touchmove', function(e) {
   e.preventDefault();
-}
+}, { passive: false });
 
 document.addEventListener('DOMContentLoaded', () => {
   // Находим элемент h2 и картинку coin1.png по селектору
@@ -41,16 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Функция для открытия модального окна
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
   if(modal) {
     var modalContent = modal.querySelector('.modal-content');
+    
     modal.style.display = 'block';
     modalContent.style.display = 'block';
 
-    // Добавляем блокировки событий на touchmove
-    window.addEventListener('touchmove', blockScroll, { passive: false });
+    // запретим прокрутку страницы
+    document.body.style.overflow = 'hidden';
+    modal.style.overflowY = 'auto'; // разрешим прокрутку для модального окна
 
     modalContent.style.bottom = '-100%';
     setTimeout(() => {
@@ -59,22 +60,23 @@ function showModal(modalId) {
   }
 }
 
-// Функция для закрытия модального окна
 function closeModal(modal) {
   if (modal) {
     var modalContent = modal.querySelector('.modal-content');
     if (modalContent) {
-        modalContent.style.bottom = '';
-        modalContent.style.animation = 'slideOut 0.4s forwards';
-        setTimeout(() => {
-            modal.style.display = 'none';
-            modalContent.style.removeProperty('animation');
-            modalContent.style.removeProperty('bottom');
+      modalContent.style.bottom = '';
+      modalContent.style.animation = 'slideOut 0.4s forwards';
+      
+      setTimeout(() => {
+          modal.style.display = 'none';
+          modalContent.style.removeProperty('animation');
+          modalContent.style.removeProperty('bottom');
 
-            // Удаляем блокировки событий на touchmove
-            window.removeEventListener('touchmove', blockScroll, { passive: false });
+          // разрешим прокрутку страницы
+          document.body.style.overflow = '';
+          modal.style.overflowY = ''; // сбрасываем значение для modal
 
-        }, 400);
+      }, 400);
     }
   }
 }
