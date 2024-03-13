@@ -36,43 +36,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Функция для открытия модального окна
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
   if(modal) {
-    var modalContent = modal.querySelector('.modal-content');
-    
-    modal.style.display = 'block';
-    modalContent.style.display = 'block';
-
-    // запретим прокрутку страницы
-    document.body.style.overflow = 'hidden';
-    modal.style.overflowY = 'auto'; // разрешим прокрутку для модального окна
-
-    modalContent.style.bottom = '-100%';
-    setTimeout(() => {
-        modalContent.style.animation = 'slideIn 0.4s forwards';
-    }, 10);
+      var modalContent = modal.querySelector('.modal-content');
+      modal.style.display = 'block';
+      modalContent.style.display = 'block'; // Убедимся, что modal-content виден
+      modalContent.style.bottom = '-100%'; // Устанавливаем исходное положение для анимации
+      
+      setTimeout(() => { // Анимация для скольжения снизу вверх
+          modalContent.style.animation = 'slideIn 0.4s forwards';
+      }, 10); // Маленькая задержка перед началом анимации
   }
 }
 
+// Функция для закрытия модального окна
 function closeModal(modal) {
   if (modal) {
-    var modalContent = modal.querySelector('.modal-content');
-    if (modalContent) {
-      modalContent.style.bottom = '';
-      modalContent.style.animation = 'slideOut 0.4s forwards';
-      
-      setTimeout(() => {
-          modal.style.display = 'none';
-          modalContent.style.removeProperty('animation');
-          modalContent.style.removeProperty('bottom');
-
-          // разрешим прокрутку страницы
-          document.body.style.overflow = '';
-          modal.style.overflowY = ''; // сбрасываем значение для modal
-
-      }, 400);
-    }
+      var modalContent = modal.querySelector('.modal-content');
+      if (modalContent) {
+          modalContent.style.bottom = ''; // Сбрасываем до значения по умолчанию
+          modalContent.style.animation = 'slideOut 0.4s forwards';
+          setTimeout(() => {
+              modal.style.display = 'none'; // Полностью скроет модальное окно
+              modalContent.style.removeProperty('animation'); // Удаляем анимацию
+              modalContent.style.removeProperty('bottom'); // Удаляем свойство bottom
+          }, 400); // Должно соответствовать продолжительности анимации
+      }
   }
 }
 
