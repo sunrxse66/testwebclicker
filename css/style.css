@@ -7,11 +7,9 @@
 
 body,
 html {
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Запрет скроллинга */
-  touch-action: none; /* Запрет жестов зума и панорамирования */
-  background-color: #C7C6E7 !important;
+    overflow: hidden; /* Запрет скроллинга */
+    touch-action: none; /* Запрет жестов зума и панорамирования */
+    background-color: #C7C6E7 !important;
 }
 
 .header {
@@ -33,18 +31,23 @@ html {
     align-items: center;
     flex-direction: column;
     margin-top: 100px;
+    padding-bottom: 76px;
 }
 
 .left-cont {
+    position: fixed; /* Используйте absolute, если контейнер должен относительно родителя позиционироваться */
+    bottom: 0; /* Прижимаем к низу экрана */
+    left: 15px; /* Отступ слева */
+    right: 15px; /* Отступ справа */
     display: flex;
     flex-direction: row;
-    width: 300px;
     height: 61px;
     background-color: #000D1E;
     opacity: 67%;
     border-radius: 20px;
     justify-content: space-evenly;
     align-items: center;
+    margin-bottom: 15px; /* Отступ снизу */
 }
 
 .menu-cont p {
@@ -58,10 +61,6 @@ html {
     width: 1px;
     height: 35px;
     background-color: #FCF5FB;
-}
-
-.left-cont {
-    margin-top: 65px;
 }
 
 .right-cont {
