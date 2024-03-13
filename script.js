@@ -112,9 +112,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 
-  window.addEventListener('touchend', function(event) {
-    if (event.target.classList.contains('modal')) {
-        closeModal(event.target);
-    }
-  });
 });
