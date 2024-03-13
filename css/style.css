@@ -192,8 +192,6 @@ html {
     animation-duration: 11s;
 }
 
-
-
 @keyframes animate {
 
     0%{
@@ -208,4 +206,78 @@ html {
         border-radius: 50%;
     }
 
+}
+
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Остаётся на месте при прокрутке */
+    z-index: 1; /* Сидит сверху */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    overflow: auto; /* Включает прокрутку, если нужно */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Чёрный с прозрачностью */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+  
+.modal-content {
+    position: fixed;
+    bottom: -100%; /* Старт снизу */
+    background-color: #4e54c8;
+    width: 100%; /* Ширина во всю ширину */
+    min-height: 500px;
+    border-radius: 20px 20px 0 0; /* Скругление верхних углов */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.4s forwards; /* Animation will "stick" at the end */
+    color: #FCF5FB;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+}
+  
+  /* Animations */
+@keyframes slideIn {
+    from {bottom: -100%; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideOut {
+    from {bottom: 0; opacity: 1}
+    to {bottom: -100%; opacity: 0}
+}
+  
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+  
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+  
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 35px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus {
+    color: black;
+    cursor: pointer;
+}
+
+.modal-text {
+    /* Стили для текстового блока внутри .modal-content */
+    padding-top: 13px;
+    padding-left: 13px;
+    /* Аналогично, можно добавить отступы справа и снизу */
 }

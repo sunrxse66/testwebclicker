@@ -33,11 +33,89 @@ document.addEventListener('DOMContentLoaded', () => {
     // Применяем стили с углами наклона
     coin.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
-    const canVibrate = window.navigator.vibrate
-    if (canVibrate) window.navigator.vibrate(100)
     // Возвращаем монету в исходное состояние
     setTimeout(() => {
       coin.style.transform = '';
     }, 200);
+  });
+});
+
+
+// Функция для открытия модального окна
+function showModal(modalId) {
+  var modal = document.getElementById(modalId);
+  if(modal) {
+      var modalContent = modal.querySelector('.modal-content');
+      modal.style.display = 'block';
+      modalContent.style.display = 'block'; // Убедимся, что modal-content виден
+      modalContent.style.bottom = '-100%'; // Устанавливаем исходное положение для анимации
+      
+      setTimeout(() => { // Анимация для скольжения снизу вверх
+          modalContent.style.animation = 'slideIn 0.4s forwards';
+      }, 10); // Маленькая задержка перед началом анимации
+  }
+}
+
+// Функция для закрытия модального окна
+function closeModal(modal) {
+  if (modal) {
+      var modalContent = modal.querySelector('.modal-content');
+      if (modalContent) {
+          modalContent.style.bottom = ''; // Сбрасываем до значения по умолчанию
+          modalContent.style.animation = 'slideOut 0.4s forwards';
+          setTimeout(() => {
+              modal.style.display = 'none'; // Полностью скроет модальное окно
+              modalContent.style.removeProperty('animation'); // Удаляем анимацию
+              modalContent.style.removeProperty('bottom'); // Удаляем свойство bottom
+          }, 400); // Должно соответствовать продолжительности анимации
+      }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Добавляем обработчики для открытия модальных окон
+  var boostsButton = document.querySelector('.menu-cont.boost');
+  var swapButton = document.querySelector('.menu-cont.swap');
+  var newsButton = document.querySelector('.menu-cont.news');
+  var appsButton = document.querySelector('.menu-cont.apps');
+
+  if (boostsButton) {
+      boostsButton.addEventListener('click', function() {
+          showModal('boostModal');
+      });
+  }
+
+  if (swapButton) {
+      swapButton.addEventListener('click', function() {
+          showModal('swapModal');
+      });
+  }
+
+  if (newsButton) {
+      newsButton.addEventListener('click', function() {
+          showModal('newsModal');
+      });
+  }
+
+  if (appsButton) {
+      appsButton.addEventListener('click', function() {
+          showModal('appsModal');
+      });
+  }
+
+  // Добавляем обработчики для закрытия модальных окон
+  var closeButtons = document.getElementsByClassName('close');
+  for (var i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].addEventListener('click', function(event) {
+          var modal = event.target.closest('.modal');
+          closeModal(modal);
+      });
+  }
+
+  // Закрытие по клику вне модального окна
+  window.addEventListener('click', function(event) {
+      if (event.target.classList.contains('modal')) {
+          closeModal(event.target);
+      }
   });
 });
