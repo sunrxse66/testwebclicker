@@ -284,12 +284,12 @@ html {
 
 @media (max-width: 768px) {
     .content h2 {
-        margin-bottom: 50px;
+        margin-bottom: 20px;
     }
 }
 
 @media (max-width: 568px) {
     .content h2 {
-        margin-bottom: 50px;
+        margin-bottom: 10px;
     }
 }
